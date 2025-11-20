@@ -58,27 +58,27 @@ jobs:
           name: bandit-security-report
           path: bandit-report.json
 
-codeql:
-  name: CodeQL Security Analysis
-  needs: [super_linter, bandit]
-  runs-on: ubuntu-latest
+  codeql:
+    name: CodeQL Security Analysis
+    needs: [super_linter, bandit]
+    runs-on: ubuntu-latest
 
-  steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
-      with:
-        languages: python, typescript, java
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: python, typescript, java
 
-    # Manual Java build (required because there is no Maven/Gradle)
-    - name: Build Java manually
-      run: |
-        mkdir -p out
-        javac -d out $(find . -name "*.java")
+      # Manual Java build (required because there is no Maven/Gradle)
+      - name: Build Java manually
+        run: |
+          mkdir -p out
+          javac -d out $(find . -name "*.java")
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
 
 
